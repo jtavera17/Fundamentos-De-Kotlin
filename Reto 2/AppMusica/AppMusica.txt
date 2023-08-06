@@ -1,0 +1,50 @@
+class Album(private val albumName: String, private val musicType: String) {
+    private val songs = mutableListOf<Song>()
+
+    fun addSong(title: String, artist: String, releaseYear: Int, playCount: Int) {
+        songs.add(Song(title, artist, releaseYear, playCount))
+    }
+
+    fun getTotalSongs(): Int {
+        return songs.size
+    }
+
+    fun getMusicType(): String {
+        return musicType
+    }
+
+    fun getMostPopularSong(): Song? {
+        return songs.maxByOrNull { it.playCount }
+    }
+
+    fun printSongDescriptions() {
+        for (song in songs) {
+            val popularity = if (song.playCount >= 1000) "más popular" else "poco popular"
+            println("${song.title}, interpretada por ${song.artist}, se lanzó en ${song.releaseYear}, ${song.playCount} reproducciones, es $popularity del álbum.")
+        }
+    }
+}
+
+class Song(
+    val title: String,
+    val artist: String,
+    val releaseYear: Int,
+    var playCount: Int
+)
+
+fun main() {
+    val album = Album("Bad Bunny", "Latino")
+
+    album.addSong("Sci-Fi", "Rauw Alejandro", 2022, 500)
+    album.addSong("Moscow Mule", "Bad Bunny", 2022, 1200)
+    album.addSong("Mojabi Ghost", "Tainy", 2023, 800)
+
+    println("El álbum ${album.getTotalSongs()} canciones de tipo ${album.getMusicType()}.")
+
+    val mostPopularSong = album.getMostPopularSong()
+    mostPopularSong?.let {
+        println("La canción más popular del álbum es ${it.title}, interpretada por ${it.artist}, con ${it.playCount} reproducciones.")
+    }
+
+    album.printSongDescriptions()
+}
